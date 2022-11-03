@@ -10,7 +10,7 @@ part of 'myDatabase.dart';
 class EmployeeData extends DataClass implements Insertable<EmployeeData> {
   final int id;
   final String name;
-  final int cpf;
+  final String cpf;
   final DateTime dateOfBirth;
   final String email;
   const EmployeeData(
@@ -24,7 +24,7 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['cpf'] = Variable<int>(cpf);
+    map['cpf'] = Variable<String>(cpf);
     map['dateOfBirth'] = Variable<DateTime>(dateOfBirth);
     map['email'] = Variable<String>(email);
     return map;
@@ -46,7 +46,7 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
     return EmployeeData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      cpf: serializer.fromJson<int>(json['cpf']),
+      cpf: serializer.fromJson<String>(json['cpf']),
       dateOfBirth: serializer.fromJson<DateTime>(json['dateOfBirth']),
       email: serializer.fromJson<String>(json['email']),
     );
@@ -57,7 +57,7 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'cpf': serializer.toJson<int>(cpf),
+      'cpf': serializer.toJson<String>(cpf),
       'dateOfBirth': serializer.toJson<DateTime>(dateOfBirth),
       'email': serializer.toJson<String>(email),
     };
@@ -66,7 +66,7 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
   EmployeeData copyWith(
           {int? id,
           String? name,
-          int? cpf,
+          String? cpf,
           DateTime? dateOfBirth,
           String? email}) =>
       EmployeeData(
@@ -104,7 +104,7 @@ class EmployeeData extends DataClass implements Insertable<EmployeeData> {
 class EmployeeCompanion extends UpdateCompanion<EmployeeData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<int> cpf;
+  final Value<String> cpf;
   final Value<DateTime> dateOfBirth;
   final Value<String> email;
   const EmployeeCompanion({
@@ -117,7 +117,7 @@ class EmployeeCompanion extends UpdateCompanion<EmployeeData> {
   EmployeeCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required int cpf,
+    required String cpf,
     required DateTime dateOfBirth,
     required String email,
   })  : name = Value(name),
@@ -127,7 +127,7 @@ class EmployeeCompanion extends UpdateCompanion<EmployeeData> {
   static Insertable<EmployeeData> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<int>? cpf,
+    Expression<String>? cpf,
     Expression<DateTime>? dateOfBirth,
     Expression<String>? email,
   }) {
@@ -143,7 +143,7 @@ class EmployeeCompanion extends UpdateCompanion<EmployeeData> {
   EmployeeCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<int>? cpf,
+      Value<String>? cpf,
       Value<DateTime>? dateOfBirth,
       Value<String>? email}) {
     return EmployeeCompanion(
@@ -165,7 +165,7 @@ class EmployeeCompanion extends UpdateCompanion<EmployeeData> {
       map['name'] = Variable<String>(name.value);
     }
     if (cpf.present) {
-      map['cpf'] = Variable<int>(cpf.value);
+      map['cpf'] = Variable<String>(cpf.value);
     }
     if (dateOfBirth.present) {
       map['dateOfBirth'] = Variable<DateTime>(dateOfBirth.value);
@@ -209,9 +209,9 @@ class $EmployeeTable extends Employee
       type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _cpfMeta = const VerificationMeta('cpf');
   @override
-  late final GeneratedColumn<int> cpf = GeneratedColumn<int>(
+  late final GeneratedColumn<String> cpf = GeneratedColumn<String>(
       'cpf', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _dateOfBirthMeta =
       const VerificationMeta('dateOfBirth');
   @override
@@ -277,7 +277,7 @@ class $EmployeeTable extends Employee
       name: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       cpf: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}cpf'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}cpf'])!,
       dateOfBirth: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}dateOfBirth'])!,
       email: attachedDatabase.options.types

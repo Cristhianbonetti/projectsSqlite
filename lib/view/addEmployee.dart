@@ -3,7 +3,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 
+import '../data/local/db/myDatabase.dart';
 import '../widget/customTextFormField.dart';
+import 'package:drift/drift.dart' as drift;
 
 class AddEmployee extends StatefulWidget {
   const AddEmployee({Key? key}) : super(key: key);
@@ -13,11 +15,28 @@ class AddEmployee extends StatefulWidget {
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+  late MyDatabase _db;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   DateTime? dateOfBith;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = MyDatabase();
+  }
+
+  @override
+  void dispose() {
+    _db.close();
+    nameController.dispose();
+    cpfController.dispose();
+    dateOfBirthController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +45,14 @@ class _AddEmployeeState extends State<AddEmployee> {
         title: const Text('Adcionar Funcionário'),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.save),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              onPressed: () {
+                addEmployee();
+              },
+              icon: const Icon(Icons.save),
+            ),
           ),
         ],
       ),
@@ -106,5 +130,30 @@ class _AddEmployeeState extends State<AddEmployee> {
       String dob = DateFormat('dd/MM/yyyy').format(newDate);
       dateOfBirthController.text = dob;
     });
+  }
+
+  void addEmployee() {
+    final entity = EmployeeCompanion(
+      name: drift.Value(nameController.text),
+      cpf: drift.Value(cpfController.text),
+      dateOfBirth: drift.Value(dateOfBith!),
+      email: drift.Value(emailController.text),
+    );
+
+    _db.insertEmployee(entity).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.grey[300],
+              content: Text('Novo funcionario adicionado: $value'),
+              actions: [
+                TextButton(
+                  onPressed: () =>
+                      ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                  child: const Text('Fechar'),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }
