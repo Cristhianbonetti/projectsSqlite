@@ -56,14 +56,30 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final employee = employees[index];
                 return Card(
-                  child: Column(
-                    children: [
-                      Text(employee.id.toString()),
-                      Text(employee.name.toString()),
-                      Text(employee.cpf.toString()),
-                      Text(employee.dateOfBirth.toString()),
-                      Text(employee.email.toString()),
-                    ],
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.grey,
+                        style: BorderStyle.solid,
+                        width: 1.8,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0),
+                        bottomRight: Radius.circular(16.0),
+                      )),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Id: ${employee.id.toString()}'),
+                        Text('Nome: ${employee.name.toString()}'),
+                        Text('CPF: ${employee.cpf.toString()}'),
+                        Text(
+                            'Data de Nasci: ${employee.dateOfBirth.toString()}'),
+                        Text('E-mail: ${employee.email.toString()}'),
+                      ],
+                    ),
                   ),
                 );
               },
