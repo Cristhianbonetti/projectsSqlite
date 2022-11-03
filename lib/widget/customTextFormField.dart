@@ -6,11 +6,13 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     required this.controller,
     required this.keyboardType,
+    this.ontap,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String label;
   final TextInputType keyboardType;
+  final Function? ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
             return '$label não pode ser vazio';
           }
         },
+        onTap: () => ontap,
       ),
     );
   }
